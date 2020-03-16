@@ -22,10 +22,10 @@ public class Algorithm
 		open.add(current);
 		while (!open.isEmpty())
 		{
-			Point current = open.get(0);
+			current = open.get(0);
 			for (Point point : open)
 			{
-				current = point.getVal() > current.getVal() ? point : current;
+				current = point.getVal() > current.getVal() ? current : point;
 			}
 			if (current.equals(end))
 			{
@@ -41,11 +41,12 @@ public class Algorithm
 		}
 
 		ArrayList<Point> res = new ArrayList<Point>();
-		Point parent = current.getParent();
-		while (parent != null)
+
+		current = current.getParent(); // push 1 gen back (current == end rn)
+		while (!current.equals(start))
 		{
-			res.add(parent);
-			parent = current.getParent();
+			res.add(current);
+			current = current.getParent();
 		}
 		return res;
 	}
@@ -80,7 +81,6 @@ public class Algorithm
 			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-
 		return points;
 	}
 
@@ -90,15 +90,3 @@ public class Algorithm
 		return distance;
 	}
 }
-
-/*
-        A   B   C   D   E   F   G   H
-    1 [  ][  ][  ][  ][  ][  ][  ][  ]
-    2 [  ][  ][  ][  ][  ][2 ][  ][  ]
-    3 [  ][  ][-1][-1][-1][  ][  ][  ]
-    4 [  ][  ][  ][-1][  ][  ][  ][  ]
-    5 [  ][  ][  ][-1][  ][  ][  ][  ]
-    6 [  ][0 ][  ][-1][  ][  ][  ][  ]
-    7 [  ][  ][  ][  ][  ][  ][  ][  ]
-    8 [  ][  ][  ][  ][  ][  ][  ][  ]
-*/
