@@ -18,46 +18,65 @@ public class Algorithm
 
 	public ArrayList<Point> find(int matrix[][])
 	{
-		ArrayList<Point> res = new ArrayList<Point>();
 		current.setVal(current.getG() + manhattenDistance(current, end));
 		open.add(current);
 		while (!open.isEmpty())
 		{
+			Point current = open.get(0);
+			for (Point point : open)
+			{
+				current = point.getVal() > current.getVal() ? point : current;
+			}
 			if (current.equals(end))
 			{
 				break;
 			}
+			ArrayList<Point> newPoints = getPoints(current, matrix);
+			for (Point point : newPoints)
+			{
+				open.add(point);
+			}
+			close.add(current);
+			open.remove(current);
+		}
+
+		ArrayList<Point> res = new ArrayList<Point>();
+		Point parent = current.getParent();
+		while (parent != null)
+		{
+			res.add(parent);
+			parent = current.getParent();
 		}
 		return res;
 	}
 
-	private ArrayList<Point> getPoints(Point n)
+	private ArrayList<Point> getPoints(Point n, int matrix[][])
 	{
 		ArrayList<Point> points = new ArrayList<Point>();
 		
 		int x = n.getX();
 		int y = n.getY();
-		if (x + 1 < 8)
+		if (x + 1 < 8 && matrix[y][x+1] != 9)
 		{
-			Point newPoint = new Point(x+1, y, n.getG()+1);
+			Point newPoint = new Point(x+1, y, n.getG()+1, n);
 			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (x - 1 >= 0)
+		if (x - 1 >= 0 && matrix[y][x-1] != 9)
 		{
-			Point newPoint = new Point(x-1, y, n.getG()+1);
+			Point newPoint = new Point(x-1, y, n.getG()+1, n);
 			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (y + 1 < 8)
+		if (y + 1 < 8 && matrix[y+1][x] != 9)
 		{
-			Point newPoint = new Point(x, y+1, n.getG()+1);
+			Point newPoint = new Point(x, y+1, n.getG()+1, n);
 			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (y - 1 >= 0)
+		if (y - 1 >= 0 && matrix[y-1][x] != 9)
 		{
-			Point newPoint = new Point(x, y-1, n.getG()+1);
+			Point newPoint = new Point(x, y-1, n.getG()+1, n);
 			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
