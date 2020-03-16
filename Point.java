@@ -2,13 +2,14 @@ public class Point
 {
 	private int x;
 	private int y;
-	private int val;
+	private int g; // distance from start
+	private int val; // score
 
-	public Point(int x, int y, int val)
+	public Point(int x, int y, int g)
 	{
 		this.x = x;
 		this.y = y;
-		this.val = val;
+		this.g = g;
 	}
 
 	public int getX()
@@ -19,6 +20,11 @@ public class Point
 	public int getY()
 	{
 		return this.y;
+	}
+
+	public int getG()
+	{
+		return this.g;
 	}
 
 	public int getVal()
@@ -36,8 +42,18 @@ public class Point
 		this.y = newY;
 	}
 
+	public void setG(int newG)
+	{
+		this.g = newG;
+	}
+
 	public void setVal(int newVal)
 	{
 		this.val = newVal;
+	}
+
+	public boolean equals(Point other)
+	{
+		return this.x == other.x && this.y == other.y;
 	}
 }
