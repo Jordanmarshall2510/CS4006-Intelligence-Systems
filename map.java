@@ -3,11 +3,17 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
- 
+import java.util.ArrayList;
 public class map extends Application
-{  
+{
+    int matrix[][] =     {{0,0,0,0,1,0,0,0},
+						  {0,0,0,0,0,0,0,0},
+						  {0,0,9,9,9,0,0,0},
+						  {0,0,0,9,0,0,0,0},
+						  {0,0,0,9,0,0,0,0},
+						  {0,0,0,0,0,0,0,0},
+						  {0,0,0,3,0,0,0,0},
+						  {0,0,0,0,0,0,0,0}};
 
     GridPane grid = new GridPane();
     Button buttons[][] = new Button[8][8];
@@ -29,17 +35,16 @@ public class map extends Application
             }
         }
 
-        setObstacleColour(2,2);
-        setObstacleColour(2,3);
-        setObstacleColour(2,4);
-        setObstacleColour(3,3);
-        setObstacleColour(4,3);
-        setObstacleColour(5,3);
+        Point start = new Point(4, 0, 0);
+		Point end = new Point(3, 6, 0);
+		Algorithm alg = new Algorithm(start, end);
+		ArrayList<Point> path = alg.find(matrix);
+		for (Point point : path)
+		{
+			matrix[point.getY()][point.getX()] = 2;
+		}
 
-        setStartColour(1,5);
-        setEndColour(5,1);
-
-
+        buttonChecker();
        
         Scene scene = new Scene(grid, 800, 800);
        
@@ -62,5 +67,23 @@ public class map extends Application
 
     public void setPathColour(int row, int col){
         buttons[row][col].setStyle("-fx-background-color: blue; -fx-border-color: white;");
+    }
+    // start = 1, end = 3, path = 2, obsticle = 9
+    public void buttonChecker(){
+        for (int x = 0; x < matrix.length; x++)
+        {
+            for (int y = 0; y < matrix[x].length; y++)
+            {
+                if(matrix[x][y]==1){
+                    setStartColour(x, y);
+                }else if(matrix[x][y]==3){
+                    setEndColour(x, y);
+                }else if(matrix[x][y]==2){
+                    setPathColour(x, y);
+                }else if(matrix[x][y]==9){
+                    setObstacleColour(x, y);
+                }
+            }
+        }
     }
 }
