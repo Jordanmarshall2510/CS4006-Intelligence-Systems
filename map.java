@@ -6,30 +6,28 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 import javafx.event.ActionEvent; 
 import javafx.event.EventHandler; 
+import java.util.Arrays;
 
 public class map extends Application
 {
-	int matrix[][] =     {{0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0},
-						  {0,0,0,0,0,0,0,0}};
+	int matrix[][] = new int[8][8];
 
 	GridPane grid = new GridPane();
 	Button buttons[][] = new Button[8][8];
 	int row;
 	int col;
 	int letter;
-	boolean startExist = false, endExist = false;
+	boolean startExist = false, endExist = false, pathExist = false;
 	Point start, end;
 
 	@Override
 	public void start(Stage board)
 	{
-	   
+		for(int row[] : matrix)
+		{
+			Arrays.fill(row, 0);
+		}
+
 		for (row = 0; row < buttons.length; row++)
 		{
 			for (col = 0; col < buttons[row].length; col++)
@@ -41,37 +39,53 @@ public class map extends Application
 
 				buttons[row][col].setOnAction(new EventHandler<ActionEvent>() {
 					@Override public void handle(ActionEvent e){
-						if(!endExist)
+						if (!pathExist)
 						{
-							for (int row = 0; row < buttons.length; row++)
+							if(!endExist)
 							{
-								for (int col = 0; col < buttons[row].length; col++)
+								for (int row = 0; row < buttons.length; row++)
 								{
-									if (buttons[row][col] == e.getSource() && !startExist && matrix[row][col] == 0)
+									for (int col = 0; col < buttons[row].length; col++)
 									{
-										setStartColour(row, col);
-										start = new Point(row, col);
-										startExist = true;
-										matrix [row][col] = 1;
-									}
-									else if(buttons[row][col] == e.getSource()&& matrix[row][col] == 0)
-									{
-										setEndColour(row, col);
-										end = new Point(row, col);
-										endExist = true;
-										matrix [row][col] = 3;
+										if (buttons[row][col] == e.getSource() && !startExist && matrix[row][col] == 0)
+										{
+											setStartColour(row, col);
+											start = new Point(row, col);
+											startExist = true;
+											matrix [row][col] = 1;
+										}
+										else if(buttons[row][col] == e.getSource()&& matrix[row][col] == 0)
+										{
+											setEndColour(row, col);
+											end = new Point(row, col);
+											endExist = true;
+											matrix [row][col] = 3;
+										}
 									}
 								}
+							}
+							else
+							{
+								Algorithm alg = new Algorithm(start, end);
+								ArrayList<Point> path = alg.find(matrix);
+								for (Point point : path)
+								{
+									matrix[point.getRow()][point.getCol()] = 2;
+								}
+								buttonChecker();
+								pathExist = true;
 							}
 						}
 						else
 						{
-							Algorithm alg = new Algorithm(start, end);
-							ArrayList<Point> path = alg.find(matrix);
-							for (Point point : path)
+							for (int row[] : matrix)
 							{
-								matrix[point.getRow()][point.getCol()] = 2;
+								Arrays.fill(row, 0);
 							}
+							startExist = false;
+							endExist = false;
+							pathExist = false;
+							genObstacle();
 							buttonChecker();
 						}
 					}
@@ -104,7 +118,11 @@ public class map extends Application
 	public void setPathColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: blue; -fx-border-color: white;");
 	}
-	// start = 1, end = 3, path = 2, obsticle = 9
+
+	public void setDefaultColour(int row, int col){
+		buttons[row][col].setStyle("-fx-background-color: grey; -fx-border-color: white;");
+	}
+
 	public void buttonChecker(){
 		for (int x = 0; x < matrix.length; x++)
 		{
@@ -118,6 +136,8 @@ public class map extends Application
 					setPathColour(x, y);
 				}else if(matrix[x][y]==9){
 					setObstacleColour(x, y);
+				}else if(matrix[x][y]==0){
+					setDefaultColour(x, y);
 				}
 			}
 		}
