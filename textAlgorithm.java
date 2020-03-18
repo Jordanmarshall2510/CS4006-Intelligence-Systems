@@ -13,11 +13,13 @@ public class textAlgorithm
 						  {0,0,0,0,0,0,0,0},
 						  {0,0,0,0,0,0,0,0}};
 
-		Algorithm alg = new Algorithm(new Point(1, 4, 0), new Point(5, 1, 0));
+		Point start = new Point(1, 4);
+		Point end = new Point(5, 1);
+		Algorithm alg = new Algorithm(start, end);
 		ArrayList<Point> path = alg.find(matrix);
 		for (Point point : path)
 		{
-			matrix[point.getY()][point.getX()] = 2;
+			matrix[point.getRow()][point.getCol()] = 2;
 		}
 
 		for (int[] row : matrix)

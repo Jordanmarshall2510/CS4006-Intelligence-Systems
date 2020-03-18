@@ -18,14 +18,14 @@ public class Algorithm
 
 	public ArrayList<Point> find(int matrix[][])
 	{
-		current.setVal(current.getG() + manhattenDistance(current, end));
+		current.setScore(current.getG() + manhattenDistance(current, end));
 		open.add(current);
 		while (!open.isEmpty())
 		{
 			current = open.get(0);
 			for (Point point : open)
 			{
-				current = point.getVal() > current.getVal() ? current : point;
+				current = point.getScore() > current.getScore() ? current : point;
 			}
 			if (current.equals(end))
 			{
@@ -55,30 +55,31 @@ public class Algorithm
 	{
 		ArrayList<Point> points = new ArrayList<Point>();
 		
-		int x = n.getX();
-		int y = n.getY();
-		if (x + 1 < 8 && matrix[y][x+1] != 9)
+		int row = n.getRow();
+		int col = n.getCol();
+
+		if (col + 1 < 8 && matrix[row][col+1] != 9)
 		{
-			Point newPoint = new Point(x+1, y, n.getG()+1, n);
-			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
+			Point newPoint = new Point(row, col+1, n.getG()+1, n);
+			newPoint.setScore(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (x - 1 >= 0 && matrix[y][x-1] != 9)
+		if (col - 1 >= 0 && matrix[row][col-1] != 9)
 		{
-			Point newPoint = new Point(x-1, y, n.getG()+1, n);
-			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
+			Point newPoint = new Point(row, col-1, n.getG()+1, n);
+			newPoint.setScore(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (y + 1 < 8 && matrix[y+1][x] != 9)
+		if (row + 1 < 8 && matrix[row+1][col] != 9)
 		{
-			Point newPoint = new Point(x, y+1, n.getG()+1, n);
-			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
+			Point newPoint = new Point(row+1, col, n.getG()+1, n);
+			newPoint.setScore(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
-		if (y - 1 >= 0 && matrix[y-1][x] != 9)
+		if (row - 1 >= 0 && matrix[row-1][col] != 9)
 		{
-			Point newPoint = new Point(x, y-1, n.getG()+1, n);
-			newPoint.setVal(newPoint.getG() + manhattenDistance(newPoint, end));
+			Point newPoint = new Point(row-1, col, n.getG()+1, n);
+			newPoint.setScore(newPoint.getG() + manhattenDistance(newPoint, end));
 			points.add(newPoint);
 		}
 		return points;
@@ -86,19 +87,7 @@ public class Algorithm
 
 	public int manhattenDistance(Point m, Point n)
 	{
-		int distance = (Math.abs(m.getX()-n.getX())) + (Math.abs(m.getY()-n.getY()));
+		int distance = (Math.abs(m.getRow()-n.getRow())) + (Math.abs(m.getCol()-n.getCol()));
 		return distance;
 	}
 }
-
-/*
-        A   B   C   D   E   F   G   H
-    1 [  ][  ][  ][  ][  ][  ][  ][  ]
-    2 [  ][  ][  ][  ][  ][2 ][  ][  ]
-    3 [  ][  ][-1][-1][-1][  ][  ][  ]
-    4 [  ][  ][  ][-1][  ][  ][  ][  ]
-    5 [  ][  ][  ][-1][  ][  ][  ][  ]
-    6 [  ][0 ][  ][-1][  ][  ][  ][  ]
-    7 [  ][  ][  ][  ][  ][  ][  ][  ]
-    8 [  ][  ][  ][  ][  ][  ][  ][  ]
-*/
