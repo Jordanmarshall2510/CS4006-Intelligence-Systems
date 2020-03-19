@@ -1,3 +1,13 @@
+/*
+	The Gang
+	****************************
+	Marcin Sek 			18254187
+	Jordan Marshall 	18256716
+	Ademide Adenuga		18220258
+	Rioghan Lowry		18226531
+	****************************
+*/
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -8,7 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 import java.util.Arrays;
 
-public class map extends Application
+public class is18256716 extends Application
 {
 	int matrix[][] = new int[8][8];
 
@@ -17,7 +27,7 @@ public class map extends Application
 	int row;
 	int col;
 	int letter;
-	boolean startExist = false, endExist = false, pathExist = false;
+	int stage = -1;
 	Point start, end;
 
 	@Override
@@ -31,62 +41,75 @@ public class map extends Application
 		for (row = 0; row < buttons.length; row++)
 		{
 			for (col = 0; col < buttons[row].length; col++)
-			{      
+			{
 				buttons[row][col] = new Button("", null);
 				buttons[row][col].setPrefSize(100, 100);
 				buttons[row][col].setStyle("-fx-background-color: grey; -fx-border-color: white;");
 				grid.add(buttons[row][col], col, row);
 
-				buttons[row][col].setOnAction(new EventHandler<ActionEvent>() {
-					@Override public void handle(ActionEvent e){
-						if (!pathExist)
+				buttons[row][col].setOnAction(e ->
+				{
+					switch(stage)
+					{
+						case -1:
 						{
-							if(!endExist)
+							for (int row = 0; row < buttons.length; row++)
 							{
-								for (int row = 0; row < buttons.length; row++)
+								for (int col = 0; col < buttons[row].length; col++)
 								{
-									for (int col = 0; col < buttons[row].length; col++)
+									if (buttons[row][col] == e.getSource() && matrix[row][col] == 0)
 									{
-										if (buttons[row][col] == e.getSource() && !startExist && matrix[row][col] == 0)
-										{
-											setStartColour(row, col);
-											start = new Point(row, col);
-											startExist = true;
-											matrix [row][col] = 1;
-										}
-										else if(buttons[row][col] == e.getSource()&& matrix[row][col] == 0)
-										{
-											setEndColour(row, col);
-											end = new Point(row, col);
-											endExist = true;
-											matrix [row][col] = 3;
-										}
+										setStartColour(row, col);
+										start = new Point(row, col);
+										matrix [row][col] = 1;
 									}
 								}
 							}
-							else
+							stage++;
+							break;
+						}
+						case 0:
+						{
+							for (int row = 0; row < buttons.length; row++)
 							{
-								Algorithm alg = new Algorithm(start, end);
-								ArrayList<Point> path = alg.find(matrix);
+								for (int col = 0; col < buttons[row].length; col++)
+								{
+									if (buttons[row][col] == e.getSource() && matrix[row][col] == 0)
+									{
+										setEndColour(row, col);
+											end = new Point(row, col);
+											matrix [row][col] = 3;
+									}
+								}
+							}
+							stage++;
+							break;
+						}
+						case 1:
+						{
+							Algorithm alg = new Algorithm(start, end);
+							ArrayList<Point> path = alg.find(matrix);
+							if (path != null)
+							{
 								for (Point point : path)
 								{
 									matrix[point.getRow()][point.getCol()] = 2;
 								}
-								buttonChecker();
-								pathExist = true;
 							}
+							buttonChecker();
+							stage++;
+							break;
 						}
-						else
+						case 2:
 						{
 							for (int row[] : matrix)
 							{
 								Arrays.fill(row, 0);
 							}
-							startExist = false;
-							endExist = false;
-							pathExist = false;
 							genObstacle();
 							buttonChecker();
+							stage = -1;
+							break;
 						}
 					}
 				});
@@ -103,27 +126,27 @@ public class map extends Application
 		board.show();
 	}
 
-	public void setObstacleColour(int row, int col){
+	private void setObstacleColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: black; -fx-border-color: white;");
 	}
    
-	public void setStartColour(int row, int col){
+	private void setStartColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: green; -fx-border-color: white;");
 	}
 
-	public void setEndColour(int row, int col){
+	private void setEndColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: red; -fx-border-color: white;");
 	}
 
-	public void setPathColour(int row, int col){
+	private void setPathColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: blue; -fx-border-color: white;");
 	}
 
-	public void setDefaultColour(int row, int col){
+	private void setDefaultColour(int row, int col){
 		buttons[row][col].setStyle("-fx-background-color: grey; -fx-border-color: white;");
 	}
 
-	public void buttonChecker(){
+	private void buttonChecker(){
 		for (int x = 0; x < matrix.length; x++)
 		{
 			for (int y = 0; y < matrix[x].length; y++)
@@ -143,10 +166,10 @@ public class map extends Application
 		}
 	}
 
-	public void genObstacle(){
+	private void genObstacle(){
 		int letter, row, col;
 		// Num gens
-		letter =(int)(Math.random()* 4); // 0 -> 3
+		letter = (int)(Math.random()* 4); // 0 -> 3
 		row = (int)(Math.random() * 8); // 0 -> 7
 		col = (int)(Math.random() * 8); // 0 -> 7
 	

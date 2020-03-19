@@ -1,3 +1,13 @@
+/*
+	The Gang
+	****************************
+	Marcin Sek 			18254187
+	Jordan Marshall 	18256716
+	Ademide Adenuga		18220258
+	Rioghan Lowry		18226531
+	****************************
+*/
+
 public class Point
 {
 	private int row;
