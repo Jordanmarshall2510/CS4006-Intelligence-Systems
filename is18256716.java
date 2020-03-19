@@ -62,10 +62,11 @@ public class is18256716 extends Application
 										setStartColour(row, col);
 										start = new Point(row, col);
 										matrix [row][col] = 1;
+										stage++;
 									}
 								}
 							}
-							stage++;
+							
 							break;
 						}
 						case 0:
@@ -79,14 +80,15 @@ public class is18256716 extends Application
 										setEndColour(row, col);
 											end = new Point(row, col);
 											matrix [row][col] = 3;
+											stage++;
 									}
 								}
 							}
-							stage++;
 							break;
 						}
 						case 1:
 						{
+							stage++;
 							Algorithm alg = new Algorithm(start, end);
 							ArrayList<Point> path = alg.find(matrix);
 							if (path != null)
@@ -97,18 +99,19 @@ public class is18256716 extends Application
 								}
 							}
 							buttonChecker();
-							stage++;
+							
 							break;
 						}
 						case 2:
 						{
+							stage = -1;
 							for (int row[] : matrix)
 							{
 								Arrays.fill(row, 0);
 							}
 							genObstacle();
 							buttonChecker();
-							stage = -1;
+							
 							break;
 						}
 					}
@@ -169,7 +172,7 @@ public class is18256716 extends Application
 	private void genObstacle(){
 		int letter, row, col;
 		// Num gens
-		letter = (int)(Math.random()* 4); // 0 -> 3
+		letter = (int)(Math.random()* 3); // 0 -> 2
 		row = (int)(Math.random() * 8); // 0 -> 7
 		col = (int)(Math.random() * 8); // 0 -> 7
 	
@@ -219,14 +222,6 @@ public class is18256716 extends Application
 				matrix[row+i][col] = 9;
 			}
 			matrix[row+2][col+1] = 9;
-        }
-        else if(letter == 3)
-		{
-			//Random
-			for(int i = 0; i < 25; i++){
-                matrix [(int)(Math.random() * 8)][(int)(Math.random() * 8)] = 9;
-            }
-        }
-    
+        }    
 	}
 }
