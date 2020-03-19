@@ -121,63 +121,81 @@ public class is18256716 extends Application
 
 		genObstacle();
 		buttonChecker();
-	   
+
 		Scene scene = new Scene(grid, 800, 800);
-	   
+
 		board.setTitle("A* Algorithm");
 		board.setScene(scene);
 		board.show();
 	}
 
-	private void setObstacleColour(int row, int col){
+	private void setObstacleColour(int row, int col)
+	{
 		buttons[row][col].setStyle("-fx-background-color: black; -fx-border-color: white;");
 	}
-   
-	private void setStartColour(int row, int col){
+
+	private void setStartColour(int row, int col)
+	{
 		buttons[row][col].setStyle("-fx-background-color: green; -fx-border-color: white;");
 	}
 
-	private void setEndColour(int row, int col){
+	private void setEndColour(int row, int col)
+	{
 		buttons[row][col].setStyle("-fx-background-color: red; -fx-border-color: white;");
 	}
 
-	private void setPathColour(int row, int col){
+	private void setPathColour(int row, int col)
+	{
 		buttons[row][col].setStyle("-fx-background-color: blue; -fx-border-color: white;");
 	}
 
-	private void setDefaultColour(int row, int col){
+	private void setDefaultColour(int row, int col)
+	{
 		buttons[row][col].setStyle("-fx-background-color: grey; -fx-border-color: white;");
 	}
 
-	private void buttonChecker(){
+	private void buttonChecker()
+	{
 		for (int x = 0; x < matrix.length; x++)
 		{
 			for (int y = 0; y < matrix[x].length; y++)
 			{
-				if(matrix[x][y]==1){
+				if(matrix[x][y]==1)
+				{
 					setStartColour(x, y);
-				}else if(matrix[x][y]==3){
+				}
+				else if(matrix[x][y]==3)
+				{
 					setEndColour(x, y);
-				}else if(matrix[x][y]==2){
+				}
+				else if(matrix[x][y]==2)
+				{
 					setPathColour(x, y);
-				}else if(matrix[x][y]==9){
+				}
+				else if(matrix[x][y]==9)
+				{
 					setObstacleColour(x, y);
-				}else if(matrix[x][y]==0){
+				}
+				else if(matrix[x][y]==0)
+				{
 					setDefaultColour(x, y);
 				}
 			}
 		}
 	}
 
-	private void genObstacle(){
+	private void genObstacle()
+	{
 		int letter, row, col;
 		// Num gens
 		letter = (int)(Math.random()* 3); // 0 -> 2
 		row = (int)(Math.random() * 8); // 0 -> 7
 		col = (int)(Math.random() * 8); // 0 -> 7
 	
-		if(letter == 0){
-			if(row+2 > 7){
+		if(letter == 0)
+		{
+			if(row+2 > 7)
+			{
 				row = 5;
 			}
 			if (col+2 > 7)
@@ -185,15 +203,17 @@ public class is18256716 extends Application
 				col = 5;
 			}
 			
-			for(int i = 0; i < 3; i++ ){
-                matrix [row][col+i] = 9;
-                matrix [row+i][col+1] = 9;
-            }
+			for(int i = 0; i < 3; i++ )
+			{
+				matrix [row][col+i] = 9;
+				matrix [row+i][col+1] = 9;
+			}
 
 			//T
 
-        }
-        else if(letter == 1){
+		}
+		else if(letter == 1)
+		{
 			//I
 			if (row+2 > 7)
 			{
@@ -222,6 +242,6 @@ public class is18256716 extends Application
 				matrix[row+i][col] = 9;
 			}
 			matrix[row+2][col+1] = 9;
-        }    
+		}
 	}
 }
